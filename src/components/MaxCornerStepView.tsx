@@ -1,5 +1,6 @@
 import React from 'react';
 import type { MaxCornerStep, ExtendedTable } from '../types';
+import './MaxCornerStepView.css';
 
 interface Props {
   step: MaxCornerStep;
@@ -18,31 +19,31 @@ const MaxCornerStepView: React.FC<Props> = ({ step, table }) => {
   if (removedCol !== null) removed.push(`Usunięto kolumnę ${colLabel(removedCol)}`);
 
   return (
-    <div style={s.block}>
-      <div style={s.header}>
-        <span style={s.badge}>Iteracja {step.step}</span>
-        <span style={s.info}>
+    <div className="mc-block">
+      <div className="mc-header">
+        <span className="mc-badge">Iteracja {step.step}</span>
+        <span className="mc-info">
           Wybrany: <strong>{rowLabel(selI)}→{colLabel(selJ)}</strong> (z={selProfit}), przydział={amount}
           {removed.length > 0 && <span style={{ color: '#dc2626', marginLeft: 8 }}>| {removed.join(' | ')}</span>}
         </span>
       </div>
       <div style={{ overflowX: 'auto' }}>
-        <table style={s.tbl}>
+        <table className="tbl">
           <thead>
             <tr>
-              <th style={s.th}></th>
+              <th className="th"></th>
               {Array.from({ length: nCols }, (_, j) => (
-                <th key={j} style={{ ...s.th, color: activeCols.has(j) ? '#374151' : '#d1d5db', textDecoration: !activeCols.has(j) ? 'line-through' : undefined }}>
+                <th key={j} className="th" style={{ color: activeCols.has(j) ? '#374151' : '#d1d5db', textDecoration: !activeCols.has(j) ? 'line-through' : undefined }}>
                   {colLabel(j)}
                 </th>
               ))}
-              <th style={s.th}>Podaż</th>
+              <th className="th">Podaż</th>
             </tr>
           </thead>
           <tbody>
             {Array.from({ length: nRows }, (_, i) => (
               <tr key={i}>
-                <th style={{ ...s.th, color: activeRows.has(i) ? '#374151' : '#d1d5db', textDecoration: !activeRows.has(i) ? 'line-through' : undefined }}>
+                <th className="th" style={{ color: activeRows.has(i) ? '#374151' : '#d1d5db', textDecoration: !activeRows.has(i) ? 'line-through' : undefined }}>
                   {rowLabel(i)}
                 </th>
                 {Array.from({ length: nCols }, (_, j) => {
@@ -56,27 +57,27 @@ const MaxCornerStepView: React.FC<Props> = ({ step, table }) => {
                   const pVal = profit[i][j];
                   const pDisplay = isBlocked ? '-M' : pVal > 0 ? `+${pVal}` : String(pVal);
                   return (
-                    <td key={j} style={{ ...s.td, background: bg, outline, outlineOffset: isSel ? -2 : undefined, color }}>
+                    <td key={j} className="td" style={{ background: bg, outline, outlineOffset: isSel ? -2 : undefined, color }}>
                       <div style={{ fontWeight: isSel ? 700 : 400 }}>{pDisplay}</div>
                       {alloc[i][j] > 0 && <div style={{ fontSize: 10, color: '#16a34a' }}>[{alloc[i][j]}]</div>}
                     </td>
                   );
                 })}
-                <td style={{ ...s.td, background: '#f9fafb', fontSize: 11 }}>
+                <td className="td" style={{ background: '#f9fafb', fontSize: 11 }}>
                   {origSupply[i]}<br />
                   <span style={{ color: '#9ca3af' }}>-{origSupply[i] - remSupply[i]}={remSupply[i]}</span>
                 </td>
               </tr>
             ))}
             <tr>
-              <th style={s.th}>Popyt</th>
+              <th className="th">Popyt</th>
               {Array.from({ length: nCols }, (_, j) => (
-                <td key={j} style={{ ...s.td, background: '#f9fafb', fontSize: 11 }}>
+                <td key={j} className="td" style={{ background: '#f9fafb', fontSize: 11 }}>
                   {origDemand[j]}<br />
                   <span style={{ color: '#9ca3af' }}>-{origDemand[j] - remDemand[j]}={remDemand[j]}</span>
                 </td>
               ))}
-              <td style={s.td}></td>
+              <td className="td"></td>
             </tr>
           </tbody>
         </table>

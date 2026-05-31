@@ -1,0 +1,35 @@
+/* Styles for ProfitTable component */
+
+.overflow-wrap {
+	overflow-x: auto;
+}
+
+.tbl {
+	border-collapse: collapse;
+	font-size: 13px;
+}
+
+.th,
+.tbl .th {
+	border: 1px solid #e5e7eb;
+	padding: 5px 10px;
+	background: #f9fafb;
+	font-weight: 500;
+	color: #374151;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.td,
+.tbl .td {
+	border: 1px solid #e5e7eb;
+	padding: 5px 10px;
+	text-align: center;
+	min-width: 52px;
+}
+
+.muted-note {
+	font-size: 11px;
+	color: #9ca3af;
+	margin-top: 6px;
+}

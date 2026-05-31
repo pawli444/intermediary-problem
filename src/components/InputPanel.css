@@ -1,0 +1,71 @@
+/* InputPanel styles */
+
+.input-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.input-row {
+	display: flex;
+	gap: 12px;
+	align-items: center;
+	flex-wrap: wrap;
+}
+
+.label {
+	font-size: 13px;
+	color: #6b7280;
+}
+
+.dim {
+	width: 60px;
+	text-align: center;
+	border: 1px solid #e5e7eb;
+	border-radius: 6px;
+	padding: 5px 6px;
+	font-size: 14px;
+}
+
+.section-label {
+	font-size: 11px;
+	font-weight: 600;
+	color: #9ca3af;
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	margin-top: 4px;
+}
+
+.tbl {
+	border-collapse: collapse;
+	font-size: 13px;
+}
+
+.th {
+	border: 1px solid #e5e7eb;
+	padding: 5px 10px;
+	background: #f9fafb;
+	font-weight: 500;
+	color: #6b7280;
+	text-align: center;
+	white-space: nowrap;
+}
+
+.td {
+	border: 1px solid #e5e7eb;
+	padding: 4px 6px;
+	text-align: center;
+}
+
+.inp {
+	width: 60px;
+	border: none;
+	background: transparent;
+	text-align: center;
+	font-size: 13px;
+	outline: none;
+}
+
+.clickable-td {
+	padding: 6px 8px;
+}

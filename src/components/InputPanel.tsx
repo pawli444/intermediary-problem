@@ -1,6 +1,7 @@
 import React from 'react';
 import type { InputData } from '../types';
 import { cellKey } from '../utils/algorithm';
+import './InputPanel.css';
 
 interface Props {
   data: InputData;
@@ -71,29 +72,29 @@ const InputPanel: React.FC<Props> = ({ data, onChange }) => {
   };
 
   return (
-    <div style={s.wrap}>
+    <div className="input-wrap">
       {/* Wymiary */}
-      <div style={s.row}>
-        <span style={s.label}>Dostawców (D)</span>
-        <input type="number" style={s.dim} value={nD} min={1} max={10}
+      <div className="input-row">
+        <span className="label">Dostawców (D)</span>
+        <input type="number" className="dim" value={nD} min={1} max={10}
           onChange={e => setND(parseInt(e.target.value))} />
-        <span style={s.label}>Odbiorców (O)</span>
-        <input type="number" style={s.dim} value={nO} min={1} max={10}
+        <span className="label">Odbiorców (O)</span>
+        <input type="number" className="dim" value={nO} min={1} max={10}
           onChange={e => setNO(parseInt(e.target.value))} />
       </div>
 
       {/* Dostawcy */}
-      <div style={s.sectionLabel}>Dostawcy</div>
+      <div className="section-label">Dostawcy</div>
       <div style={{ fontSize: 11, color: '#9ca3af', marginBottom: 4 }}>
         Kliknij nazwę dostawcy aby oznaczyć priorytet (jego trasy rozpatrywane pierwsze)
       </div>
-      <table style={s.tbl}>
+      <table className="tbl">
         <thead>
-          <tr>
-            <th style={s.th}></th>
-            <th style={s.th}>Podaż</th>
-            <th style={s.th}>Koszt zakupu kz</th>
-          </tr>
+            <tr>
+              <th className="th"></th>
+              <th className="th">Podaż</th>
+              <th className="th">Koszt zakupu kz</th>
+            </tr>
         </thead>
         <tbody>
           {Array.from({ length: nD }, (_, i) => {
@@ -101,8 +102,8 @@ const InputPanel: React.FC<Props> = ({ data, onChange }) => {
             return (
               <tr key={i}>
                 <td
+                  className="clickable-td"
                   style={{
-                    ...s.td,
                     cursor: 'pointer',
                     background: isPrio ? '#fefce8' : undefined,
                     fontWeight: 700,
@@ -115,12 +116,12 @@ const InputPanel: React.FC<Props> = ({ data, onChange }) => {
                 >
                   {isPrio ? '⭐' : ''} D{i + 1}
                 </td>
-                <td style={s.td}>
-                  <input type="number" style={s.inp} value={supply[i] ?? ''} min={0}
+                <td className="td">
+                  <input type="number" className="inp" value={supply[i] ?? ''} min={0}
                     onChange={e => set({ supply: updArr(supply, i, parseFloat(e.target.value) || 0) })} />
                 </td>
-                <td style={s.td}>
-                  <input type="number" style={s.inp} value={purchaseCost[i] ?? ''} min={0}
+                <td className="td">
+                  <input type="number" className="inp" value={purchaseCost[i] ?? ''} min={0}
                     onChange={e => set({ purchaseCost: updArr(purchaseCost, i, parseFloat(e.target.value) || 0) })} />
                 </td>
               </tr>
@@ -130,17 +131,17 @@ const InputPanel: React.FC<Props> = ({ data, onChange }) => {
       </table>
 
       {/* Odbiorcy */}
-      <div style={s.sectionLabel}>Odbiorcy</div>
+      <div className="section-label">Odbiorcy</div>
       <div style={{ fontSize: 11, color: '#9ca3af', marginBottom: 4 }}>
         Kliknij nazwę odbiorcy aby oznaczyć priorytet (jego kolumna rozpatrywana pierwsza)
       </div>
-      <table style={s.tbl}>
+      <table className="tbl">
         <thead>
-          <tr>
-            <th style={s.th}></th>
-            <th style={s.th}>Popyt</th>
-            <th style={s.th}>Cena sprzedaży c</th>
-          </tr>
+            <tr>
+              <th className="th"></th>
+              <th className="th">Popyt</th>
+              <th className="th">Cena sprzedaży c</th>
+            </tr>
         </thead>
         <tbody>
           {Array.from({ length: nO }, (_, j) => {
@@ -148,8 +149,8 @@ const InputPanel: React.FC<Props> = ({ data, onChange }) => {
             return (
               <tr key={j}>
                 <td
+                  className="clickable-td"
                   style={{
-                    ...s.td,
                     cursor: 'pointer',
                     background: isPrio ? '#fefce8' : undefined,
                     fontWeight: 700,
@@ -162,12 +163,12 @@ const InputPanel: React.FC<Props> = ({ data, onChange }) => {
                 >
                   {isPrio ? '⭐' : ''} O{j + 1}
                 </td>
-                <td style={s.td}>
-                  <input type="number" style={s.inp} value={demand[j] ?? ''} min={0}
+                <td className="td">
+                  <input type="number" className="inp" value={demand[j] ?? ''} min={0}
                     onChange={e => set({ demand: updArr(demand, j, parseFloat(e.target.value) || 0) })} />
                 </td>
-                <td style={s.td}>
-                  <input type="number" style={s.inp} value={salePrice[j] ?? ''} min={0}
+                <td className="td">
+                  <input type="number" className="inp" value={salePrice[j] ?? ''} min={0}
                     onChange={e => set({ salePrice: updArr(salePrice, j, parseFloat(e.target.value) || 0) })} />
                 </td>
               </tr>
@@ -177,20 +178,17 @@ const InputPanel: React.FC<Props> = ({ data, onChange }) => {
       </table>
 
       {/* Koszty transportu */}
-      <div style={s.sectionLabel}>
-        Koszty transportu kt
-      </div>
+      <div className="section-label">Koszty transportu kt</div>
       <div style={{ fontSize: 11, color: '#9ca3af', marginBottom: 4 }}>
         PPM lub kliknij komórkę = zablokuj trasę (z = −M)
       </div>
       <div style={{ overflowX: 'auto' }}>
-        <table style={s.tbl}>
+        <table className="tbl">
           <thead>
             <tr>
-              <th style={s.th}></th>
+              <th className="th"></th>
               {Array.from({ length: nO }, (_, j) => (
-                <th key={j} style={{
-                  ...s.th,
+                <th key={j} className="th" style={{
                   background: priorityReceivers.has(j) ? '#fefce8' : '#f9fafb',
                   color: priorityReceivers.has(j) ? '#b45309' : '#6b7280',
                 }}>
@@ -202,8 +200,7 @@ const InputPanel: React.FC<Props> = ({ data, onChange }) => {
           <tbody>
             {Array.from({ length: nD }, (_, i) => (
               <tr key={i}>
-                <th style={{
-                  ...s.th,
+                <th className="th" style={{
                   background: prioritySuppliers.has(i) ? '#fefce8' : '#f9fafb',
                   color: prioritySuppliers.has(i) ? '#b45309' : '#6b7280',
                 }}>
@@ -213,8 +210,8 @@ const InputPanel: React.FC<Props> = ({ data, onChange }) => {
                   const isBlocked = blockedRoutes.has(cellKey(i, j));
                   return (
                     <td key={j}
+                      className="td"
                       style={{
-                        ...s.td,
                         background: isBlocked ? '#fef2f2' : undefined,
                         cursor: 'pointer',
                       }}
@@ -226,7 +223,7 @@ const InputPanel: React.FC<Props> = ({ data, onChange }) => {
                         ? <span style={{ color: '#dc2626', fontWeight: 600 }}>🚫</span>
                         : <input
                             type="number"
-                            style={s.inp}
+                            className="inp"
                             value={transport[i]?.[j] ?? ''}
                             min={0}
                             onClick={e => e.stopPropagation()}
@@ -245,30 +242,6 @@ const InputPanel: React.FC<Props> = ({ data, onChange }) => {
       </div>
     </div>
   );
-};
-
-const s: Record<string, React.CSSProperties> = {
-  wrap: { display: 'flex', flexDirection: 'column', gap: 12 },
-  row: { display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' },
-  label: { fontSize: 13, color: '#6b7280' },
-  dim: {
-    width: 60, textAlign: 'center', border: '1px solid #e5e7eb',
-    borderRadius: 6, padding: '5px 6px', fontSize: 14,
-  },
-  sectionLabel: {
-    fontSize: 11, fontWeight: 600, color: '#9ca3af',
-    textTransform: 'uppercase', letterSpacing: '0.06em', marginTop: 4,
-  },
-  tbl: { borderCollapse: 'collapse', fontSize: 13 },
-  th: {
-    border: '1px solid #e5e7eb', padding: '5px 10px', background: '#f9fafb',
-    fontWeight: 500, color: '#6b7280', textAlign: 'center', whiteSpace: 'nowrap',
-  },
-  td: { border: '1px solid #e5e7eb', padding: '4px 6px', textAlign: 'center' },
-  inp: {
-    width: 60, border: 'none', background: 'transparent',
-    textAlign: 'center', fontSize: 13, outline: 'none',
-  },
 };
 
 export default InputPanel;
