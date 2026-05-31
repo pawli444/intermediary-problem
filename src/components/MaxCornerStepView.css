@@ -1,0 +1,53 @@
+/* MaxCornerStepView styles */
+
+.mc-block {
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	padding: 12px 14px;
+	margin-bottom: 12px;
+	background: #fff;
+}
+
+.mc-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 8px;
+	flex-wrap: wrap;
+}
+
+.mc-badge {
+	background: #eff6ff;
+	color: #1d4ed8;
+	font-size: 12px;
+	font-weight: 500;
+	padding: 2px 10px;
+	border-radius: 6px;
+	white-space: nowrap;
+}
+
+.mc-info {
+	font-size: 12px;
+	color: #6b7280;
+}
+
+.tbl {
+	border-collapse: collapse;
+	font-size: 12px;
+}
+
+.th {
+	border: 1px solid #e5e7eb;
+	padding: 4px 9px;
+	background: #f9fafb;
+	font-weight: 500;
+	text-align: center;
+	min-width: 46px;
+}
+
+.td {
+	border: 1px solid #e5e7eb;
+	padding: 4px 9px;
+	text-align: center;
+	min-width: 46px;
+}

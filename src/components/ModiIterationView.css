@@ -1,0 +1,131 @@
+/* ModiIterationView component styles */
+
+.modi-block {
+	border: 1px solid #e5e7eb;
+	border-radius: 10px;
+	padding: 12px 14px;
+	margin-bottom: 12px;
+	background: #fff;
+}
+
+.modi-header {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-bottom: 6px;
+	flex-wrap: wrap;
+}
+
+.modi-badge {
+	font-size: 12px;
+	font-weight: 500;
+	padding: 2px 10px;
+	border-radius: 6px;
+	white-space: nowrap;
+}
+
+.modi-info {
+	font-size: 12px;
+	color: #6b7280;
+}
+
+.uv-row {
+	display: flex;
+	gap: 6px;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-bottom: 6px;
+}
+
+.uv-label {
+	font-size: 11px;
+	color: #9ca3af;
+}
+
+.uv-chip {
+	font-size: 12px;
+	background: #f5f3ff;
+	color: #7c3aed;
+	padding: 1px 7px;
+	border-radius: 4px;
+}
+
+.tbl {
+	border-collapse: collapse;
+	font-size: 12px;
+}
+
+.th {
+	border: 1px solid #e5e7eb;
+	padding: 4px 8px;
+	background: #f9fafb;
+	font-weight: 500;
+	text-align: center;
+	min-width: 64px;
+}
+
+.td {
+	padding: 5px 8px;
+	text-align: center;
+	min-width: 64px;
+	vertical-align: middle;
+	border: 1px solid #e5e7eb;
+}
+
+.legend {
+	display: flex;
+	gap: 10px;
+	flex-wrap: wrap;
+	margin-top: 8px;
+}
+
+.loop-viz {
+	background: #f9fafb;
+	border-radius: 8px;
+	padding: 8px 10px;
+	margin-top: 8px;
+}
+
+.loop-title {
+	font-size: 11px;
+	font-weight: 600;
+	color: #374151;
+	margin-right: 8px;
+}
+
+.loop-steps {
+	display: flex;
+	gap: 4px;
+	flex-wrap: wrap;
+	align-items: center;
+	margin-top: 6px;
+}
+
+.loop-cell {
+	font-size: 11px;
+	font-weight: 500;
+	padding: 3px 7px;
+	border-radius: 4px;
+	white-space: nowrap;
+}
+
+.muted-small {
+	font-size: 11px;
+	color: #6b7280;
+	margin-top: 4px;
+}
+
+.leg-item {
+	display: flex;
+	align-items: center;
+	gap: 4px;
+	font-size: 11px;
+	color: #6b7280;
+}
+
+.leg-swatch {
+	width: 10px;
+	height: 10px;
+	border-radius: 2px;
+	display: inline-block;
+}
