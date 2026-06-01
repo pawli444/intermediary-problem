@@ -44,13 +44,18 @@ export function buildExtended(inp: InputData): ExtendedTable {
     for (let j = 0; j < nCols; j++) {
       const isFD = i === nD;
       const isFO = j === nO;
+
       if (isFD || isFO) {
         profit[i].push(0);
         isBlockedCell[i].push(false);
-      } else if (blockedRoutes.has(cellKey(i, j))) {
+      }
+      
+      else if (blockedRoutes.has(cellKey(i, j))) {
         profit[i].push(-BIG_M);
         isBlockedCell[i].push(true);
-      } else {
+      } 
+      
+      else {
         const z = salePrice[j] - purchaseCost[i] - transport[i][j];
         profit[i].push(z);
         isBlockedCell[i].push(false);
@@ -94,18 +99,23 @@ export function runMaxCorner(
     let selI = -1, selJ = -1, maxP = -Infinity;
     let phase: 'priority' | 'normal' = 'normal';
 
+
+
     if (prioRows.size > 0 || prioCols.size > 0) {
       let best: { i: number; j: number; val: number } | null = null;
       if (prioRows.size > 0) {
         const cand = pickBest(prioRows, activeCols, profit);
         if (cand && cand.val > (best?.val ?? -Infinity)) best = cand;
       }
+
       if (prioCols.size > 0) {
         const cand = pickBest(activeRows, prioCols, profit);
         if (cand && cand.val > (best?.val ?? -Infinity)) best = cand;
       }
       if (best) { selI = best.i; selJ = best.j; maxP = best.val; phase = 'priority'; }
     }
+
+
 
     if (selI === -1) {
       // Zasada: FO i FD obsadzamy na końcu — najpierw szukaj wśród
@@ -133,6 +143,8 @@ export function runMaxCorner(
     alloc[selI][selJ] += amount;
     S[selI] -= amount;
     D[selJ] -= amount;
+
+    
 
     const snap: MaxCornerStep = {
       step: steps.length + 1,

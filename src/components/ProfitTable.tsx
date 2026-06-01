@@ -13,6 +13,7 @@ const ProfitTable: React.FC<Props> = ({ table }) => {
       <table className="tbl">
         <thead>
           <tr>
+            {/* Naglowek */}
             <th className="th" />
             {Array.from({ length: nCols }, (_, j) => (
               <th key={j} className="th" style={{ color: isFOCol[j] ? '#9ca3af' : '#374151' }}>
@@ -22,10 +23,14 @@ const ProfitTable: React.FC<Props> = ({ table }) => {
             <th className="th">Podaż</th>
           </tr>
         </thead>
+
         <tbody>
+        {/* Wiersze */}
           {Array.from({ length: nRows }, (_, i) => (
             <tr key={i}>
               <th className="th" style={{ color: isFDRow[i] ? '#9ca3af' : '#374151' }}>{isFDRow[i] ? 'FD' : `D${i + 1}`}</th>
+            
+             {/* Zyski */}
               {Array.from({ length: nCols }, (_, j) => {
                 const val = profit[i][j];
                 const isBlocked = isBlockedCell[i][j];
@@ -47,6 +52,8 @@ const ProfitTable: React.FC<Props> = ({ table }) => {
               <td className="td" style={{ color: '#6b7280' }}>{supply[i]}</td>
             </tr>
           ))}
+
+          
           <tr>
             <th className="th">Popyt</th>
             {Array.from({ length: nCols }, (_, j) => (

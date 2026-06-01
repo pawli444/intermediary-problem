@@ -19,6 +19,8 @@ const MaxCornerStepView: React.FC<Props> = ({ step, table }) => {
   if (removedCol !== null) removed.push(`Usunięto kolumnę ${colLabel(removedCol)}`);
 
   return (
+
+    
     <div className="mc-block">
       <div className="mc-header">
         <span className="mc-badge">Iteracja {step.step}</span>
@@ -27,13 +29,17 @@ const MaxCornerStepView: React.FC<Props> = ({ step, table }) => {
           {removed.length > 0 && <span style={{ color: '#dc2626', marginLeft: 8 }}>| {removed.join(' | ')}</span>}
         </span>
       </div>
+
+
       <div style={{ overflowX: 'auto' }}>
         <table className="tbl">
           <thead>
             <tr>
+              {/* Nagłowki kolumn */}
               <th className="th"></th>
               {Array.from({ length: nCols }, (_, j) => (
-                <th key={j} className="th" style={{ color: activeCols.has(j) ? '#374151' : '#d1d5db', textDecoration: !activeCols.has(j) ? 'line-through' : undefined }}>
+                <th key={j} className="th" style={{ color: activeCols.has(j) ? '#374151' : '#d1d5db',
+                 textDecoration: !activeCols.has(j) ? 'line-through' : undefined }}>
                   {colLabel(j)}
                 </th>
               ))}
@@ -41,11 +47,17 @@ const MaxCornerStepView: React.FC<Props> = ({ step, table }) => {
             </tr>
           </thead>
           <tbody>
+            {/* Wiersze tabeli */}
             {Array.from({ length: nRows }, (_, i) => (
               <tr key={i}>
-                <th className="th" style={{ color: activeRows.has(i) ? '#374151' : '#d1d5db', textDecoration: !activeRows.has(i) ? 'line-through' : undefined }}>
+                <th className="th" style={{ color: activeRows.has(i) ? '#374151' : '#d1d5db',
+                   textDecoration: !activeRows.has(i) ? 'line-through' : undefined }}>
                   {rowLabel(i)}
                 </th>
+
+
+                
+                {/* Komórki macierzy */}
                 {Array.from({ length: nCols }, (_, j) => {
                   const isSel = i === selI && j === selJ;
                   const hasAlloc = alloc[i][j] > 0;
@@ -54,8 +66,10 @@ const MaxCornerStepView: React.FC<Props> = ({ step, table }) => {
                   if (isBlocked) { bg = '#fef2f2'; color = '#dc2626'; }
                   else if (isSel) { bg = '#dcfce7'; outline = '2px solid #1d4ed8'; }
                   else if (hasAlloc) { bg = '#dcfce7'; }
+
                   const pVal = profit[i][j];
                   const pDisplay = isBlocked ? '-M' : pVal > 0 ? `+${pVal}` : String(pVal);
+
                   return (
                     <td key={j} className="td" style={{ background: bg, outline, outlineOffset: isSel ? -2 : undefined, color }}>
                       <div style={{ fontWeight: isSel ? 700 : 400 }}>{pDisplay}</div>
@@ -63,6 +77,8 @@ const MaxCornerStepView: React.FC<Props> = ({ step, table }) => {
                     </td>
                   );
                 })}
+
+                {/* Podaz Popyt */}
                 <td className="td" style={{ background: '#f9fafb', fontSize: 11 }}>
                   {origSupply[i]}<br />
                   <span style={{ color: '#9ca3af' }}>-{origSupply[i] - remSupply[i]}={remSupply[i]}</span>

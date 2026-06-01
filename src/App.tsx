@@ -102,10 +102,7 @@ const App: React.FC = () => {
               </div>
               {error && <div className="error">{error}</div>}
               <div className="hint">
-                <strong>Priorytety:</strong> kliknij nazwę dostawcy lub odbiorcy (⭐) — jego trasy
-                będą rozpatrywane w pierwszej kolejności w metodzie max wierzchołka.<br />
-                <strong>Blokowanie trasy:</strong> kliknij komórkę kosztu transportu (🚫) — trasa
-                dostaje z = −M i nigdy nie wejdzie do rozwiązania.
+                <strong>Blokowanie trasy:</strong> kliknij komórkę kosztu transportu (⭐)
               </div>
             </>
           )}
@@ -182,6 +179,6 @@ const App: React.FC = () => {
   );
 };
 
-// Styles moved to src/App.css
+
 
 export default App;
