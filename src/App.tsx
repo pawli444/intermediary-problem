@@ -45,7 +45,7 @@ const App: React.FC = () => {
     setMaxSteps(steps);
 
     const lastAlloc = steps[steps.length - 1]?.alloc ?? [];
-    const modiResults = runModi(lastAlloc, ext.profit, ext.nRows, ext.nCols);
+    const modiResults = runModi(lastAlloc, ext.profit, ext.isBlockedCell, ext.nRows, ext.nCols);
     setModiIters(modiResults);
 
     setPhase('profit');
@@ -102,10 +102,8 @@ const App: React.FC = () => {
               </div>
               {error && <div className="error">{error}</div>}
               <div className="hint">
-                <strong>Priorytety:</strong> kliknij nazwę dostawcy lub odbiorcy (⭐) — jego trasy
-                będą rozpatrywane w pierwszej kolejności w metodzie max wierzchołka.<br />
-                <strong>Blokowanie trasy:</strong> kliknij komórkę kosztu transportu (🚫) — trasa
-                dostaje z = −M i nigdy nie wejdzie do rozwiązania.
+                <strong>Priorytety:</strong> kliknij nazwę dostawcy lub odbiorcy (⭐)
+
               </div>
             </>
           )}
@@ -159,7 +157,7 @@ const App: React.FC = () => {
                   {finalModi.alloc.flatMap((row, i) =>
                     row.map((x, j) => {
                       if (x <= 0) return null;
-                      if (extended.isFDRow[i] || extended.isFOCol[j]) return null;
+                      if (extended.isFDRow[i] || extended.isFOCol[j] || extended.isBlockedCell[i][j]) return null;
                       const c = data.salePrice[j];
                       const kz = data.purchaseCost[i];
                       const kt = data.transport[i]?.[j] ?? 0;
@@ -182,7 +180,7 @@ const App: React.FC = () => {
                     finalModi.alloc.forEach((row, i) =>
                       row.forEach((x, j) => {
                         if (x <= 0) return;
-                        if (extended.isFDRow[i] || extended.isFOCol[j]) return;
+                        if (extended.isFDRow[i] || extended.isFOCol[j] || extended.isBlockedCell[i][j]) return;
                         totalRevenue   += x * data.salePrice[j];
                         totalPurchase  += x * data.purchaseCost[i];
                         totalTransport += x * (data.transport[i]?.[j] ?? 0);

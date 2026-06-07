@@ -62,11 +62,12 @@ export function buildExtended(inp: InputData): ExtendedTable {
 }
 
 function pickBest(
-  rows: Set<number>, cols: Set<number>, profit: number[][]
+  rows: Set<number>, cols: Set<number>, profit: number[][], isBlockedCell: boolean[][]
 ): { i: number; j: number; val: number } | null {
   let maxP = -Infinity, selI = -1, selJ = -1;
   for (const i of rows) {
     for (const j of cols) {
+      if (isBlockedCell[i]?.[j]) continue;
       if (profit[i][j] > maxP) { maxP = profit[i][j]; selI = i; selJ = j; }
     }
   }
@@ -79,7 +80,7 @@ export function runMaxCorner(
   prioritySuppliers: Set<number>,
   priorityReceivers: Set<number>,
 ): MaxCornerStep[] {
-  const { nRows, nCols, profit } = table;
+  const { nRows, nCols, profit, isBlockedCell } = table;
   const S = [...table.supply];
   const D = [...table.demand];
   const alloc: number[][] = Array.from({ length: nRows }, () => Array(nCols).fill(0));
@@ -95,16 +96,18 @@ export function runMaxCorner(
     let phase: 'priority' | 'normal' = 'normal';
 
     if (prioRows.size > 0 || prioCols.size > 0) {
-      let best: { i: number; j: number; val: number } | null = null;
+      let bestI = -1;
+      let bestJ = -1;
+      let bestVal = -Infinity;
       if (prioRows.size > 0) {
-        const cand = pickBest(prioRows, activeCols, profit);
-        if (cand && cand.val > (best?.val ?? -Infinity)) best = cand;
+        const cand = pickBest(prioRows, activeCols, profit, isBlockedCell);
+        if (cand && cand.val > bestVal) { bestI = cand.i; bestJ = cand.j; bestVal = cand.val; }
       }
       if (prioCols.size > 0) {
-        const cand = pickBest(activeRows, prioCols, profit);
-        if (cand && cand.val > (best?.val ?? -Infinity)) best = cand;
+        const cand = pickBest(activeRows, prioCols, profit, isBlockedCell);
+        if (cand && cand.val > bestVal) { bestI = cand.i; bestJ = cand.j; bestVal = cand.val; }
       }
-      if (best) { selI = best.i; selJ = best.j; maxP = best.val; phase = 'priority'; }
+      if (bestI !== -1) { selI = bestI; selJ = bestJ; maxP = bestVal; phase = 'priority'; }
     }
 
     if (selI === -1) {
@@ -119,10 +122,10 @@ export function runMaxCorner(
       const foCols  = new Set([...activeCols].filter(j =>  table.isFOCol[j]));
 
       let cand =
-        (realRows.size > 0 && realCols.size > 0 ? pickBest(realRows, realCols, profit) : null) ??
-        (realRows.size > 0 && foCols.size  > 0 ? pickBest(realRows, foCols,  profit) : null) ??
-        (fdRows.size  > 0 && realCols.size > 0 ? pickBest(fdRows,  realCols, profit) : null) ??
-        pickBest(activeRows, activeCols, profit);
+        (realRows.size > 0 && realCols.size > 0 ? pickBest(realRows, realCols, profit, isBlockedCell) : null) ??
+        (realRows.size > 0 && foCols.size  > 0 ? pickBest(realRows, foCols,  profit, isBlockedCell) : null) ??
+        (fdRows.size  > 0 && realCols.size > 0 ? pickBest(fdRows,  realCols, profit, isBlockedCell) : null) ??
+        pickBest(activeRows, activeCols, profit, isBlockedCell);
 
       if (!cand) break;
       selI = cand.i; selJ = cand.j; maxP = cand.val;
@@ -213,10 +216,10 @@ function findLoop(
 }
 
 export function modiStep(
-  alloc: number[][], profit: number[][], nRows: number, nCols: number
+  alloc: number[][], profit: number[][], isBlockedCell: boolean[][], nRows: number, nCols: number
 ): ModiIteration {
   const basis: boolean[][] = Array.from({ length: nRows }, (_, i) =>
-    Array.from({ length: nCols }, (_, j) => alloc[i][j] > 0)
+    Array.from({ length: nCols }, (_, j) => alloc[i][j] > 0 && !isBlockedCell[i][j])
   );
 
   const { u, v } = computeUV(basis, profit, nRows, nCols);
@@ -227,6 +230,7 @@ export function modiStep(
   for (let i = 0; i < nRows; i++) {
     for (let j = 0; j < nCols; j++) {
       if (basis[i][j]) continue;
+      if (isBlockedCell[i][j]) continue;
       if (u[i] === null || v[j] === null) continue;
       const d = profit[i][j] - u[i]! - v[j]!;
       D[i][j] = d;
@@ -236,6 +240,7 @@ export function modiStep(
 
   const totalProfit = alloc.flat().reduce((s, x, k) => {
     const i = Math.floor(k / nCols), j = k % nCols;
+    if (isBlockedCell[i][j]) return s;
     return s + x * profit[i][j];
   }, 0);
 
@@ -285,13 +290,13 @@ export function modiStep(
 }
 
 export function runModi(
-  initialAlloc: number[][], profit: number[][], nRows: number, nCols: number,
+  initialAlloc: number[][], profit: number[][], isBlockedCell: boolean[][], nRows: number, nCols: number,
   maxIter = 50
 ): ModiIteration[] {
   const iters: ModiIteration[] = [];
   let alloc = initialAlloc.map(r => [...r]);
   for (let i = 0; i < maxIter; i++) {
-    const it = modiStep(alloc, profit, nRows, nCols);
+    const it = modiStep(alloc, profit, isBlockedCell, nRows, nCols);
     it.step = i + 1;
     iters.push(it);
     if (it.isOptimal) break;
