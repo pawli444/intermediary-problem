@@ -154,21 +154,63 @@ const App: React.FC = () => {
               {finalModi?.isOptimal && (
                 <div className="result">
                   <div className="resultTitle">✓ Rozwiązanie optymalne</div>
-                  <div className="resultSub">Maksymalny zysk całkowity:</div>
-                  <div className="resultVal">{finalModi.totalProfit.toFixed(0)}</div>
+
                   <div className="resultSub mt12">Plan dostaw (bez FD/FO):</div>
                   {finalModi.alloc.flatMap((row, i) =>
                     row.map((x, j) => {
                       if (x <= 0) return null;
                       if (extended.isFDRow[i] || extended.isFOCol[j]) return null;
+                      const c = data.salePrice[j];
+                      const kz = data.purchaseCost[i];
+                      const kt = data.transport[i]?.[j] ?? 0;
+                      const z = extended.profit[i][j];
                       return (
                         <div key={`${i}-${j}`} className="allocRow">
                           <div>D{i + 1} → O{j + 1}</div>
-                          <div>{x} jedn. × z={extended.profit[i][j]} = {x * extended.profit[i][j]}</div>
+                          <div style={{ fontSize: 12, color: '#6b7280' }}>
+                            c={c} − kz={kz} − kt={kt} = z={z} | {x} jedn. × {z} = {x * z}
+                          </div>
                         </div>
                       );
                     })
                   )}
+
+                  {(() => {
+                    let totalRevenue = 0;
+                    let totalPurchase = 0;
+                    let totalTransport = 0;
+                    finalModi.alloc.forEach((row, i) =>
+                      row.forEach((x, j) => {
+                        if (x <= 0) return;
+                        if (extended.isFDRow[i] || extended.isFOCol[j]) return;
+                        totalRevenue   += x * data.salePrice[j];
+                        totalPurchase  += x * data.purchaseCost[i];
+                        totalTransport += x * (data.transport[i]?.[j] ?? 0);
+                      })
+                    );
+                    const totalProfit = totalRevenue - totalPurchase - totalTransport;
+                    return (
+                      <div className="costSummary">
+                        <div className="costRow">
+                          <span>Przychód ze sprzedaży:</span>
+                          <span className="costVal positive">+{totalRevenue}</span>
+                        </div>
+                        <div className="costRow">
+                          <span>Koszty zakupu:</span>
+                          <span className="costVal negative">−{totalPurchase}</span>
+                        </div>
+                        <div className="costRow">
+                          <span>Koszty transportu:</span>
+                          <span className="costVal negative">−{totalTransport}</span>
+                        </div>
+                        <div className="costDivider" />
+                        <div className="costRow">
+                          <span><strong>Zysk całkowity:</strong></span>
+                          <span className="resultVal">{totalProfit}</span>
+                        </div>
+                      </div>
+                    );
+                  })()}
                 </div>
               )}
               <button className="btnSec mt12" onClick={() => setPhase('input')}>

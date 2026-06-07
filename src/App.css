@@ -164,3 +164,42 @@
     gap: 10px;
     flex-wrap: wrap;
 }
+
+
+
+
+.costSummary {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-top: 16px;
+  border: 1px solid #e5e7eb;
+}
+
+.costRow {
+  display: flex;
+  justify-content: space-between;
+  font-size: 14px;
+  padding: 4px 0;
+}
+
+.costVal {
+  font-weight: 600;
+}
+
+.costVal.positive {
+  color: #16a34a;
+}
+
+.costVal.negative {
+  color: #dc2626;
+}
+
+.costDivider {
+  border-top: 1px solid #e5e7eb;
+  margin: 8px 0;
+}
+
+.content {
+  min-height: 100px;
+}
